@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel ./public/index.html",
-    "build":"parcel build ./public/index.html --no-cache -d ./docs/",
+    "build": "parcel build ./public/index.html --no-cache -d ./docs/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -33,6 +33,7 @@
     "@babel/preset-env": "^7.13.15",
     "@babel/preset-react": "^7.13.13",
     "parcel-bundler": "^1.12.5",
+    "parcel-plugin-purifycss": "^1.0.5",
     "sass": "^1.32.10"
   }
 }

@@ -1,0 +1,30 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "title": "json-server",
+            "author": "typicode"
+        }
+    ],
+    "comments": [
+        {
+            "id": 1,
+            "body": "some comment",
+            "postId": 1
+        }
+    ],
+    "profile": [
+        {
+            "question": "实现一个防抖函数",
+            "type": "[手写代码]",
+            "answer": "",
+            "id": 1234
+        },
+        {
+            "question": "实现一个节流函数",
+            "type": "[手写代码]",
+            "answer": "",
+            "id": 4321
+        }
+    ]
+}

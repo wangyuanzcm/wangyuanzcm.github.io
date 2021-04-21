@@ -35,9 +35,11 @@ export default class Editor extends React.Component {
   render() {
     const { infos, mode } = this.props;
     const { content } = this.state;
+    console.log(content,'content')
+    console.log(infos.body,"infos.body")
     return (
       <>
-        <div className="subject-question">{infos.question}</div>
+        <div className="subject-question">{infos.title}</div>
         {mode === "answer" ? (
           <AceEditor
             mode="javascript"
@@ -50,9 +52,9 @@ export default class Editor extends React.Component {
           />
         ) : (
           <ReactDiffViewer
-            oldValue={infos.answer}
+            oldValue={infos.body}
             newValue={content}
-            splitView={false}
+            splitView={true}
           />
         )}
       

@@ -25,7 +25,7 @@ export default class Layout extends React.Component {
   compare() {
     const {datalist} = this.props;
     const { current, editStatus } = this.state;
-    const answer = datalist[current].answer;
+    const answer = datalist[current].body;
     const similarity = stringSimilarity.compareTwoStrings(answer, editStatus.get(current));
     this.setState({ similar: (similarity * 100).toFixed(2) });
   }

@@ -20,6 +20,7 @@ function ProfilePage() {
 class App extends React.Component {
   render() {
     const datalist = resource.datalist.read();
+    console.log(datalist,"datalist");
     const initTime = getInitTime();
     return (
       <div className="container">

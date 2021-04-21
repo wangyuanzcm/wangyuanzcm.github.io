@@ -1,6 +1,10 @@
 import axios from 'axios';
+// let mapUrl={
+//     getData:"http://localhost:3000/profile"
+// }
+const baseUrl = 'https://api.github.com/repos/wangyuanzcm/hiker-blog/'
 let mapUrl={
-    getData:"http://localhost:3000/profile"
+  getData:baseUrl+"issues",
 }
 export function fetchProfileData() {
     let dataPromise = fetchData();

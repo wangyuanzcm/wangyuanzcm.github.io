@@ -7,7 +7,7 @@
     "start": "parcel ./public/index.html",
     "mock": "json-server ./mock/db.json",
     "postbuild": "purgecss --css ./dist/*.css --content ./dist/index.html './dist/*.js' --output ./",
-    "build": "rm -rf ./dist && parcel build ./public/index.html --no-cache --public-url ../ -d ./dist/",
+    "build": "rm -rf ./dist && parcel build ./public/index.html --no-cache --public-url ./ -d ./dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

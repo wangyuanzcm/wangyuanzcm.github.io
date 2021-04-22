@@ -4,7 +4,7 @@ import "./Layout.scss";
 
 import Question from "../Question";
 const stringSimilarity = require("string-similarity");
-
+import {createComents} from '../../api'
 export default class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -29,10 +29,20 @@ export default class Layout extends React.Component {
     const similarity = stringSimilarity.compareTwoStrings(answer, editStatus.get(current));
     this.setState({ similar: (similarity * 100).toFixed(2) });
   }
+  collect=async()=>{
+    const {datalist} = this.props;
+    const {current,editStatus} = this.state;
+    const id = datalist[current].id
+    const body = editStatus?.current
+    console.log(body,"content")
+    if(body){
+      let res = await createComents(id,{body});
+      console.log(res,"res")
+    }
+  }
   render() {
     const { mode, similar, current ,editStatus} = this.state;
     const { datalist, initTime } = this.props;
-    console.log(initTime, "initTime");
     return (
       <div className="nk-main  clearfix" style={{ paddingTop: "70px" }}>
         <div className="module-box subject-box">
@@ -86,13 +96,13 @@ export default class Layout extends React.Component {
           </div>
           <div className="subject-action clearfix">
             <div className="subject-opr">
-              <span className="subject-opr-item">
+              <span className="subject-opr-item" onClick={this.collect} style={{cursor:"pointer"}}>
                 <i className="ico-collect"></i>
-                <a className="js-follow nc-req-auth" data-id="15157">
+                <a className="js-follow nc-req-auth">
                   收藏本题
                 </a>
               </span>
-              <span className="subject-opr-item">
+              {/* <span className="subject-opr-item">
                 <i className="ico-mark"></i>
                 <a
                   className="js-mark nc-req-auth"
@@ -103,7 +113,7 @@ export default class Layout extends React.Component {
                 >
                   标记一下
                 </a>
-              </span>
+              </span> */}
             </div>
 
             <div className="subject-next">

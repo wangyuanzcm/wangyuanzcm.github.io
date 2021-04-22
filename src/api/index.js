@@ -2,9 +2,9 @@ import axios from 'axios';
 // let mapUrl={
 //     getData:"http://localhost:3000/profile"
 // }
-const baseUrl = 'https://api.github.com/repos/wangyuanzcm/hiker-blog/'
+const baseUrl = 'https://api.github.com/repos/wangyuanzcm/hiker-blog/issues'
 let mapUrl={
-  getData:baseUrl+"issues",
+  getData:baseUrl,
 }
 export function fetchProfileData() {
     let dataPromise = fetchData();
@@ -54,3 +54,22 @@ export function fetchProfileData() {
       })
   }
   
+  export function createComents(id, {body=""}){
+    return new Promise((resolve, reject) => {
+      const url = baseUrl+"/"+id+"/comments"
+      axios.post( url,
+        {
+          body,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "token xxxxxxx",//token需要自己保存
+          },
+        }).then((res)=>{
+          resolve(res.data);
+      }).catch((err)=>{
+          reject(err);
+      })
+    })
+}

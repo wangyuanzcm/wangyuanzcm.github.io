@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel ./public/index.html",
     "mock": "json-server ./mock/db.json",
-    "build": "rm -rf ./dist && parcel build ./public/index.html --no-cache -d ./dist/",
+    "build": "rm -rf ./dist && parcel build ./public/index.html --no-cache --public-url ./hiker-blog/ -d ./dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

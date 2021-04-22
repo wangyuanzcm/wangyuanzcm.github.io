@@ -1,10 +1,9 @@
 import React from "react";
 import Countdown from "react-countdown-time";
-import "./Layout.scss";
-
 import Question from "../Question";
 const stringSimilarity = require("string-similarity");
-import {createComents} from '../../api'
+import {createComents} from '../../api';
+
 export default class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -13,35 +12,37 @@ export default class Layout extends React.Component {
       similar: "0",
       // content: "",//用户每次的答题内容
       current: 0,
-      editStatus:new Map()
+      editStatus: new Map(),
     };
   }
   onChange = (content) => {
-    const {current,editStatus} = this.state;
+    const { current, editStatus } = this.state;
     this.setState({
-      editStatus:editStatus.set(current,content)
+      editStatus: editStatus.set(current, content),
     });
   };
   compare() {
-    const {datalist} = this.props;
+    const { datalist } = this.props;
     const { current, editStatus } = this.state;
     const answer = datalist[current].body;
-    const similarity = stringSimilarity.compareTwoStrings(answer, editStatus.get(current));
+    const similarity = stringSimilarity.compareTwoStrings(
+      answer,
+      editStatus.get(current)
+    );
     this.setState({ similar: (similarity * 100).toFixed(2) });
   }
-  collect=async()=>{
-    const {datalist} = this.props;
-    const {current,editStatus} = this.state;
-    const id = datalist[current].id
-    const body = editStatus?.current
-    console.log(body,"content")
-    if(body){
-      let res = await createComents(id,{body});
-      console.log(res,"res")
+  collect = async () => {
+    const { datalist } = this.props;
+    const { current, editStatus } = this.state;
+    const number = datalist[current].number;
+    if (editStatus.has(current)) {
+      const body = editStatus.get(current);
+      let res = await createComents(number, { body });
+      console.log(res, "res");
     }
-  }
+  };
   render() {
-    const { mode, similar, current ,editStatus} = this.state;
+    const { mode, similar, current, editStatus } = this.state;
     const { datalist, initTime } = this.props;
     return (
       <div className="nk-main  clearfix" style={{ paddingTop: "70px" }}>
@@ -61,8 +62,7 @@ export default class Layout extends React.Component {
                 {({ d, h, m, s }) => {
                   return (
                     <a className="progress-time" title="暂停">
-                      {/* <i className="ico-time-control"></i> */}
-                      ⏰
+                      {/* <i className="ico-time-control"></i> */}⏰
                       <span
                         data-left="2591828"
                         data-time="172"
@@ -96,11 +96,13 @@ export default class Layout extends React.Component {
           </div>
           <div className="subject-action clearfix">
             <div className="subject-opr">
-              <span className="subject-opr-item" onClick={this.collect} style={{cursor:"pointer"}}>
+              <span
+                className="subject-opr-item"
+                onClick={this.collect}
+                style={{ cursor: "pointer" }}
+              >
                 <i className="ico-collect"></i>
-                <a className="js-follow nc-req-auth">
-                  收藏本题
-                </a>
+                <a className="js-follow nc-req-auth">收藏本题</a>
               </span>
               {/* <span className="subject-opr-item">
                 <i className="ico-mark"></i>
@@ -162,7 +164,15 @@ export default class Layout extends React.Component {
                 {datalist.map((item, index) => {
                   return (
                     <li key={"num" + index}>
-                      <a className={editStatus[index] ? "answer-done " : "answering-num"} style={{cursor:"pointer"}} onClick={()=>{this.setState({current:index})}}>
+                      <a
+                        className={
+                          editStatus.has(index) ? "answer-done " : "answering-num"
+                        }
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          this.setState({ current: index });
+                        }}
+                      >
                         {index + 1}
                       </a>
                     </li>

@@ -1,4 +1,4 @@
-
+//批量上传数据
 import {data} from './datalist';
 const axios = require("axios");
 const url = "https://api.github.com/repos/wangyuanzcm/hiker-blog/issues";

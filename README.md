@@ -3,3 +3,6 @@
 
 将dist作为项目页面进行提交
     `git subtree push --prefix dist origin gh-pages`
+
+
+使用purgecss对css进行去重

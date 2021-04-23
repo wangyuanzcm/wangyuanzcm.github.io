@@ -6,8 +6,8 @@
   "scripts": {
     "start": "parcel ./public/index.html",
     "mock": "json-server ./mock/db.json",
-    "postbuild": "purgecss --css ./dist/*.css --content ./dist/index.html './dist/*.js' --output ./",
-    "build": "rm -rf ./dist && parcel build ./public/index.html --no-cache --public-url ./ -d ./dist/",
+    "purgecss": "purgecss --css ./dist/*.css --content ./dist/index.html './dist/*.js' --output ./",
+    "build": "rm -rf ./dist && parcel build ./public/index.html --no-cache --public-url / -d ./dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,6 +34,7 @@
     "axios": "^0.21.1",
     "diff": "^5.0.0",
     "moment": "^2.29.1",
+    "posthtml-img-autosize": "^0.1.6",
     "react": "^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0",
     "react-ace": "^9.4.0",
     "react-countdown-time": "^1.0.7",

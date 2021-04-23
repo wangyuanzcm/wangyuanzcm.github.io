@@ -6,3 +6,5 @@
 
 
 使用purgecss对css进行去重
+
+根据gittalk的方法，使用github登录

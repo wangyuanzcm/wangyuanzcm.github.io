@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 import {getInitTime} from "./utils"
 import "./index.scss";
 
-import { fetchProfileData } from "./api";
+import { fetchProfileData,login } from "./api";
 
 const resource = fetchProfileData();
 
@@ -24,7 +24,8 @@ class App extends React.Component {
     return (
       <div className="container">
         <div className="nowcoder-header js-nowcoder-header">
-          <div className="header-main clearfix"></div>
+          <div className="header-main clearfix">
+          </div>
         </div>
         <Layout datalist={datalist} initTime={initTime}/>
       </div>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import {generateMixed} from '../utils';
 // let mapUrl={
 //     getData:"http://localhost:3000/profile"
 // }
@@ -57,6 +58,7 @@ function fetchData() {
   });
 }
 
+//创建评论
 export function createComents(id, { body = "" }) {
   return new Promise((resolve, reject) => {
     const url = baseUrl + "/" + id + "/comments";
@@ -73,6 +75,29 @@ export function createComents(id, { body = "" }) {
           },
         }
       )
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+// 登录
+export function login() {
+  return new Promise((resolve, reject) => {
+
+    const url = "https://github.com/login/oauth/authorize";
+    const randomString = generateMixed(32);
+    axios({
+      method: 'GET',
+      url,
+      params: {
+        client_id:"Iv1.786f48775927e39d",
+        redirect_uri:"http://localhost:1234/",
+        state:randomString
+      }
+    })
       .then((res) => {
         resolve(res.data);
       })

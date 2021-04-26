@@ -1,3 +1,19 @@
+---
+nav:
+  title: 手写算法
+  path: /coding
+---
+
+## Foo
+
+Demo:
+
+```tsx
+import React from 'react';
+import { Coding } from 'hiker-blog';
+
+export default () => <Coding title="First Demo" />;
+```
 斐波那契数列
 爬楼梯问题
 合并2个有序数组成1个有序数组

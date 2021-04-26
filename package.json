@@ -1,59 +1,42 @@
 {
+  "private": true,
   "name": "hiker-blog",
   "version": "1.0.0",
-  "description": "记录一下问题，总结在学习过程中的一些知识",
-  "main": "index.js",
   "scripts": {
-    "start": "parcel ./public/index.html",
-    "mock": "json-server ./mock/db.json",
-    "purgecss": "purgecss --css ./dist/*.css --content ./dist/index.html './dist/*.js' --output ./",
-    "build": "rm -rf ./dist && parcel build ./public/index.html --no-cache --public-url https://wangyuanzcm.github.io/hiker-blog/ -d ./dist/",
-    "deploy": "gh-pages -d dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "dumi dev",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d docs-dist",
+    "build": "father-build",
+    "deploy": "npm run docs:build && npm run docs:deploy",
+    "release": "npm run build && npm publish",
+    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wangyuanzcm/hiker-blog.git"
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "gitHooks": {
+    "pre-commit": "lint-staged"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "babel": {
-    "presets": [
-      "@babel/preset-react"
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
     ],
-    "plugins": [
-      "@babel/plugin-transform-runtime"
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
     ]
   },
-  "bugs": {
-    "url": "https://github.com/wangyuanzcm/hiker-blog/issues"
-  },
-  "homepage": "https://github.com/wangyuanzcm/hiker-blog#readme",
   "dependencies": {
-    "ace-builds": "^1.4.12",
-    "axios": "^0.21.1",
-    "diff": "^5.0.0",
-    "hexo-next-utteranc": "github:theme-next/hexo-next-utteranc",
-    "moment": "^2.29.1",
-    "posthtml-img-autosize": "^0.1.6",
-    "react": "^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0",
-    "react-ace": "^9.4.0",
-    "react-countdown-time": "^1.0.7",
-    "react-diff-viewer": "^3.1.1",
-    "react-dom": "^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0",
-    "string-similarity": "^4.0.4"
+    "react": "^16.12.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.16",
-    "@babel/plugin-transform-runtime": "^7.13.15",
-    "@babel/preset-env": "^7.13.15",
-    "@babel/preset-react": "^7.13.13",
-    "gh-pages": "^3.1.0",
-    "json-server": "^0.16.3",
-    "parcel-bundler": "^1.12.5",
-    "parcel-plugin-purifycss": "^1.0.5",
-    "purgecss": "^4.0.3",
-    "sass": "^1.32.10"
+    "@umijs/test": "^3.0.5",
+    "dumi": "^1.0.13",
+    "father-build": "^1.17.2",
+    "gh-pages": "^3.0.0",
+    "lint-staged": "^10.0.7",
+    "prettier": "^1.19.1",
+    "yorkie": "^2.0.0"
   }
 }

@@ -1,3 +1,20 @@
+---
+nav:
+  title: 手写代码
+  path: /components
+
+---
+
+## Foo
+
+Demo:
+
+```tsx
+import React from 'react';
+import { Coding } from 'hiker-blog';
+
+export default () => <Coding title="First Demo" />;
+```
 
 1. 手写代码
 

@@ -18,7 +18,7 @@ export default () => <Exercise title="First Demo" />;
 
 - [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
   - 合并两个有序链表,合并两个链表
-  ```
+```javascript
   function merge(nums1,m,nums2,n){
       let index1 =m-1;
       let index2 = n-1;
@@ -35,7 +35,7 @@ export default () => <Exercise title="First Demo" />;
           }
       }
   }
-  ```
+```
 - [统计所有小于非负整数 n 的质数的数量](https://leetcode-cn.com/problems/count-primes/)
   ```
   var countPrimes = function(n) {
@@ -396,3 +396,217 @@ const splitString = (str)=>{
   }
   ```
 - 实现一个函数模拟除法，用括号把无限循环小数扩起来，例如1/3=0.33333，该函数需要返回`0.(3)`
+
+```
+```
+- 输入一个int整型数组，数组中的一个或多个连续整数组成一个子数组。求所有子数组中和的最大值。输入的数组中保证至少有一个正数
+    ```
+    function maxArray(nums){
+        let res = -Infinity;
+        let sum = nums[0];
+        let i = 1;
+        while(i<nums.length){
+            if(Math.abs(nums[i]-nums[i-1]==1)){
+            sum+=nums[i];
+            }else{
+            sum=nums[i];
+            }s
+            i++;
+            res=Math.max(res,sum);
+        }
+        return res;
+    }
+    ```
+- [给你两个单词word1和word2，计算将word1转为word2所使用的最小操作数。你可以对一个单词进行如下操作：插入/删除/替换一个字符](https://leetcode-cn.com/problems/edit-distance/)
+  ```
+  const minDistance=(word1, word2)=> {
+  let n1 = word1.length;
+  let n2 = word2.length;
+  let dp = new Array(n1 + 1);
+  for (let i = 0; i < n1 + 1; i++) {
+    dp[i] = new Array(n2 + 1).fill(0);
+  }
+  for (let j = 0; j <= n2; j++) {
+    dp[j] = j;
+  }
+  for (let i = 1; i <= n1; i++) {
+    let temp = dp[0];
+    dp[0] = i;
+    for (let j = 1; j <= n2; j++) {
+      let pre = temp;
+      temp = dp[j];
+      if (word1.charAt(i - 1) === word2.charAt(j - 1)) {
+        dp[j] = pre;
+      } else {
+        dp[j] = Math.min(Math.min(dp[j - 1], pre), dp[j]) + 1;
+      }
+    }
+  }
+  return dp[n2];
+}
+  ```
+- [在一个ini型数组中，找出所有符合条件的三元组[a,b,c]，满足a+b+c=0。要求时间复杂度不得超过O(n^2)](https://leetcode-cn.com/problems/3sum/)
+    ```
+    var threeSum = function (nums) {
+  if (nums == null || nums.length < 3) return [];
+  nums.sort((a, b) => a - b);
+  let len = nums.length;
+  let res = [];
+  for (let i = 0; i < len; i++) {
+    if (nums[i] > 0) break;
+    if (i > 0 && nums[i] == nums[i - 1]) continue;
+    let l = i + 1;
+    let r = len - 1;
+    while (l < r) {
+      const sum = nums[l] + nums[i] + nums[r];
+      if (sum == 0) {
+        res.push([nums[l], nums[i], nums[r]]);
+        while (l < r && nums[l] == nums[l + 1]) {
+          l += 1;
+        }
+        while (l < r && nums[r] == nums[r - 1]) {
+          r -= 1;
+        }
+        l += 1;
+        r -= 1;
+      } else if (sum > 0) {
+        r -= 1;
+      } else {
+        l += 1;
+      }
+    }
+  }
+  return res;
+};
+```
+- 实现Array.prototype.reduce方法
+```
+    function myReduce(arr,callback,initValue){
+        let flag = !Array.isArray(arr)||arr.length||typeof callback !== "function";
+        if(flag)return [];
+        let isValue = initValue===0?!initValue:!!initValue;//获取初始值参数
+        let reduceValue = isValue?initValue:arr[0];
+        for(let index=isValue?0:1;index<arr.length;index++){
+            reduceValue = callback(reduceValue,arr[index],index,arr);
+        }
+        return reduceValue;
+    }
+```
+- 给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。输入数据保证，新值和原始二叉搜索树的任意节点值都不同。
+```
+    function TreeNode(val, left, right) {
+        this.val = (val===undefined ? 0 : val)
+        this.left = (left===undefined ? null : left)
+        this.right = (right===undefined ? null : right)
+    }
+    var insertIntoBST = function(root, val) {
+        if(root === null){
+        return new TreeNode(val);
+        }
+        let pos = root;
+        while(pos!=null){
+        if(val<pos.val){
+            if(pos.left == null){
+            pos.left = new TreeNode(val);
+            break;
+            }else{
+            pos=pos.left;
+            }
+        }else{
+            if(pos.right == null){
+            pos.right = new TreeNode(val);
+            break;
+            }else{
+            pos=pos.right;
+            }
+        }
+        }
+        return root;
+    };
+```
+- [给你一个按升序排序的整数数组num（可能包涵重复数字），请你把他们分割成一个或多个长度为3的子序列，其中每个子序列都有连续整数组成。如果可以完成分割则返回true，否则返回false](https://leetcode-cn.com/problems/divide-array-in-sets-of-k-consecutive-numbers/)
+
+```
+  var isPossibleDivide = function (nums, k) {  
+  let m=new Map(),min;
+  //先对数组排序，然后将数组内容保存进map
+  nums.sort((a,b)=>a-b).forEach(v => {
+    m.set(v,m.get(v)+1||1);
+  });
+  // 因为map是有序的，所以可以以插入的顺序去遍历
+  while(min=m.keys().next().value){
+    for(var i =k;i!=0;i--){
+      if(m.has(min)){
+        let tmp=m.get(min);
+        tmp === 1?m.delete(min):m.set(min,--tmp);
+        min++
+      }else{
+        return false;
+      }
+    }
+  }
+  return true;
+};
+```
+- `function a1(next){
+  console.log('dosth_a1_before');
+  next&&next();
+  console.log('dosth_a1_after');
+}
+function a2(next){
+  console.log('dosth_a2_before');
+  next&&next();
+  console.log('dosth_a2_after');
+}
+function a3(next){
+  console.log('dosth_a3_before');
+  next&&next();
+  console.log('dosth_a3_after');
+}`
+按如下顺序输出：
+`console.log('dosth_a1_before');
+console.log('dosth_a2_before');
+console.log('dosth_a3_before');
+console.log('dosth_a3_after');
+console.log('dosth_a2_after');
+console.log('dosth_a1_after');`
+
+```
+//这里是koa的compose的原理
+function compose(...args){
+  let i=0;
+  function dispatch(i){
+    const fn = args[i];
+    if(i<args.length){
+      fn(()=>dispatch(++i));
+    }
+  }
+  dispatch(i);
+}
+```
+- 如果有n个接口，需要按接口顺序渲染dom，怎么实现（提供get(id),render(id）方法)
+```
+function order(ids){
+  return ids.map(id=>new Promise((resolve)=>{
+    resolve(get(id));
+  }))
+}
+async function renderUI(ids){
+  let arr = order(ids);
+  for(let i=0;i<ids.length;i++){
+    let data = await arr[i];
+    render(id,data)
+  }
+}
+```
+- 手写一个截取url参数然后生成map关系映射的函数
+```
+const queryParse = (url)=>{
+  return url.substring(url.indexOf('?')+1).split('&').reduce((pre,cur)=>{
+    let key = cur.split('=')[0];
+    let value = cur.split('=')[1];
+    return Object.assign(pre,{[key]:value});
+  },{})
+}
+```
+- 实现一个Observer类对指定数据进行劫持

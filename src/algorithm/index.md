@@ -1,18 +1,21 @@
 ---
+title: 手写算法
 nav:
+  title: 手写代码
+  path: /components
+group:
   title: 手写算法
-  path: /coding
+  path: /手写算法
+  order: 2
 ---
-
-## Foo
 
 Demo:
 
 ```tsx
 import React from 'react';
-import { Coding } from 'hiker-blog';
+import { Algorithm } from 'hiker-blog';
 
-export default () => <Coding title="First Demo" />;
+export default () => <Algorithm title="First Demo" />;
 ```
 斐波那契数列
 爬楼梯问题

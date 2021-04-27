@@ -1,24 +1,33 @@
 ---
+title: 每日一练
 nav:
   title: 手写代码
   path: /components
+group:
+  title: 手写代码
+  path: /手写代码
+  order: 2
+demo:
+  title: 使用 axios
+  hideActions: ["CSB"]
+  desc: 通过设置 `requstMethod`, 可以使用自己的请求库。
 ---
+## 每日一练
 
-## Foo
-
-Demo:
-
-```tsx
+``` tsx
 import React from 'react';
 import { Exercise } from 'hiker-blog';
 
 export default () => <Exercise title="First Demo" />;
 ```
+<code src="./demo/demo1.jsx" />
+
 每日一练：
+
 
 - [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
   - 合并两个有序链表,合并两个链表
-```javascript
+```
   function merge(nums1,m,nums2,n){
       let index1 =m-1;
       let index2 = n-1;

@@ -1,11 +1,14 @@
 ---
+title: 目录
 nav:
   title: 手写代码
   path: /components
-
+group:
+  title: 手写代码
+  path: /手写代码
+  order: 2
 ---
 
-## Foo
 
 Demo:
 

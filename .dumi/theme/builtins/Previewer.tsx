@@ -153,7 +153,7 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
         )}
       </div>}
       <div className="__dumi-default-previewer-actions">
-        {sourceType === 'jsx' && <div
+        {(sourceType === 'jsx'&&showSource) && <div
           title="打开调试开关"
           className={`__dumi-default-switch${debugMode ? " __dumi-default-switch-active" : ""}`}
           role="调试模式"
@@ -253,7 +253,7 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
             </Tabs>
           )}
           <div className="__dumi-default-previewer-source">
-            {!debugMode ? <SourceCode code={currentFileCode} lang={sourceType} showCopy={false} /> : <SourceEditor code={currentFileCode} lang={sourceType} showCopy={false}/>}
+            {!debugMode ? <SourceCode code={currentFileCode} lang={sourceType} showCopy={false} /> : <SourceEditor code={currentFileCode} lang={sourceType} showCopy={false} iframeKey={String(iframeKey)}/>}
           </div>
         </div>
       )

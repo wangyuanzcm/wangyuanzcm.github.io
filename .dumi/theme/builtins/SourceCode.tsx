@@ -13,7 +13,6 @@ export interface ICodeBlockProps {
 
 export default ({ code, lang, showCopy = true }: ICodeBlockProps) => {
   const [copyCode, copyStatus] = useCopy();
-
   return (
     <div className="__dumi-default-code-block">
       <Highlight {...defaultProps} code={code} language={lang} theme={undefined}>
@@ -26,6 +25,26 @@ export default ({ code, lang, showCopy = true }: ICodeBlockProps) => {
                 onClick={() => copyCode(code)}
               />
             )}
+            {tokens.map((line, i) => (
+              <div {...getLineProps({ line, key: i })}>
+                {line.map((token, key) => (
+                  <span {...getTokenProps({ token, key })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        )}
+      </Highlight>
+    </div>
+  );
+};
+export const  SourceEditor = ({ code, lang, showCopy = true }: ICodeBlockProps) => {
+  const [copyCode, copyStatus] = useCopy();
+  return (
+    <div className="__dumi-default-code-block">
+      <Highlight {...defaultProps} code={code} language={lang} theme={undefined}>
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre className={className} style={style}>
             {tokens.map((line, i) => (
               <div {...getLineProps({ line, key: i })}>
                 {line.map((token, key) => (

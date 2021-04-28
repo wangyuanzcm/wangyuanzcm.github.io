@@ -6,7 +6,7 @@ nav:
 group:
   title: 手写代码
   path: /手写代码
-  order: 2
+  order: 4
 ---
 
 

@@ -7,27 +7,12 @@ group:
   title: 手写代码
   path: /手写代码
   order: 2
-demo:
-  title: 使用 axios
-  hideActions: ["CSB"]
-  desc: 通过设置 `requstMethod`, 可以使用自己的请求库。
 ---
 ## 每日一练
 
-``` tsx
-import React from 'react';
-import { Exercise } from 'hiker-blog';
-
-export default () => <Exercise title="First Demo" />;
-```
-<code src="./demo/demo1.jsx" />
-
-每日一练：
-
-
-- [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
-  - 合并两个有序链表,合并两个链表
-```
+### 2020-01-06 [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
+  - （扩展同理可解合并两个有序链表）
+```jsx
   function merge(nums1,m,nums2,n){
       let index1 =m-1;
       let index2 = n-1;
@@ -619,3 +604,591 @@ const queryParse = (url)=>{
 }
 ```
 - 实现一个Observer类对指定数据进行劫持
+```
+//包涵了对数组的处理
+class Observer{
+  constructor(data){
+    this.observe(data);
+  }
+  observe(data){
+    if(typeof data==='object'&&data!==null){
+      if(Array.isArray(data)){
+        this.observeArray(data);
+        for(let val of data){
+          this.observe(val);
+        }
+      }else{
+        for(let key in data){
+          this.observeObject(key,data,data[key]);
+        }
+      }
+    }
+  }
+  observeArray(data){
+    var _this= this;
+    var createObj = Object.create(Array.prototype);
+    data.__proto__ = createObj;
+    const methodsToPatch = ['push','pop'];
+    methodsToPatch.forEach(method=>{
+      createObj[method] = function(){
+        Array.prototype[method].call(this,...arguments);
+        _this.observe(...arguments);
+      }
+    })
+  }
+  observeObject(key,data,value){
+    Object.defineProperty(data,key,{
+      configurable:true,
+      enumerable:true,
+      get:()=>{
+        this.observe(value);
+        return value;
+      },
+      set:(val)=>{
+        if(val!==value){
+          this.observe(val);
+          value=val;
+        }
+      }
+    })
+  }
+}
+```
+- 给定一个整数数组nums，找到一个具有最大和的连续子数组（子数组最少包涵一个元素），返回其最大和
+```
+var maxSubArray = function(nums) {
+  let dp = nums[0];
+  let max = nums[0];
+  for(let i = 1;i<nums.length;i++){
+    dp= Math.max(dp+nums[i],nums[i]);
+    max=Math.max(max,dp);
+  }
+  return max;
+};
+
+```
+- `[{id:1,parentId:0},{id:2,parentId:1},{id:3,parentId:1}]`把这个数组从顶级分类递归查找到子分类，最终构建一个树状数组。结果输出如下：`[{id:1,parentId:0,children:[{id:2,parentId:1},{id:3,parentId:1}]}`,parentId为0的是根节点。
+
+```
+function arr2tree(arr){
+ return arr.reduce((pre,cur)=>{
+   const index = pre.findIndex(e=>e.id==cur.parentId);
+    if(index>-1){
+      pre[index].hasOwnProperty('children')?pre[index].children.push(cur):pre[index].children=[cur];
+    }else{
+      pre.push(cur);
+    }
+    return pre;
+ },[])
+}
+```
+- [有两个整数A和B，成员都是数字，现在系统通过如下操作后，每一次操作都从B中选择一个成员替换掉A中的一个成员。经过N次操作后，希望A变成一个递增数组。求N的最小值。例如：输入A=[2,6,4,7,8],B=[2,4,3,5],输出1.](https://leetcode-cn.com/problems/minimum-swaps-to-make-sequences-increasing/)
+```
+var minSwap = function (A, B) {
+  let n1 = 0,
+    s1 = 1;
+  for (let i = 1; i < A.length; ++i) {
+    let n2 = Infinity,
+      s2 = Infinity;
+    if (A[i - 1] < A[i] && B[i - 1] < B[i]) {
+      n2 = Math.min(n2, n1);
+      s2 = Math.min(s2, s1 + 1);
+    }
+    if (A[i - 1] < B[i] && B[i - 1] < A[i]) {
+      n2 = Math.min(n2, s1);
+      s2 = Math.min(s2, n1 + 1);
+    }
+    n1=n2;
+    s1=s2;
+  }
+  return Math.min(n1,s1)
+};
+```
+- [这里有一个约定规则，实现一个方法，decodeStr，输入一个字符串，根据约定规则输出编码结果。约定规则如下：str='2[a]1[bc]',返回'aabc',可以看出N[string]表示string正好重复N次。](https://leetcode-cn.com/problems/decode-string/)
+
+```
+var decodeString = function(s) {
+  let numStack = [];
+  let strStack = [];
+  let num = 0;
+  let result = '';
+  for(const char of s){
+    if(!isNaN(char)){
+      num=num*10+Number(char);
+    }else if(char=='['){
+      strStack.push(result);
+      result='';
+      numStack.push(num);
+      num=0;
+    }else if(char==']'){
+      let repeatTimes = numStack.pop();
+      result= strStack.pop()+result.repeat(repeatTimes);
+    }else{
+      result+=char;
+    }
+  }
+  return result;
+};
+```
+- 实现promise.all的polyfill写法。
+
+```
+
+Promises.myAll=(promiseArr)=>{
+  return new Promise((resolve,reject)=>{
+    const ans = [];
+    let index = 0;
+    for(let i=0;i<promiseArr.length;i++){
+      promiseArr[i].then((res)=>{
+        ans[i]=res;
+        index++;
+        if(index==promiseArr.length){
+          resolve(ans);
+        }
+      }).catch(err=>reject(err));
+    }
+  })
+}
+```
+- 给定一个指定数组，类似与[1,3,4,9,19],数组数量不定，找出最接近平均数的数字
+
+```
+const findAvetageLike = (arr) => {
+  let ave = arr.reduce((pre, cur) => pre + cur, 0) / arr.length;
+  let res = Infinity;
+  let n = 0;
+  for (let i of arr) {
+    let num = Math.abs(i - ave);
+    if (num < res) {
+      res = num;
+      n = i;
+    }
+  }
+  return n;
+};
+```
+
+- 给定一个二叉树，找出其最大深度。二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。说明：叶子节点是指没有子节点的节点。
+```
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+
+var maxDepth = function(root) {
+    if(!root) return 0;
+    return Math.max(maxDepth(root.left),maxDepth(root.right))+1
+};
+```
+
+- ['a','b','c','d']转{a:{b:{c:'d'}}}
+```
+const traverse=(arr)=>{
+  return arr.reduceRight((pre,cur)=>{
+    if(pre){
+      return {[cur]:pre}
+    }else{
+      return {cur};
+    }
+  })
+}
+```
+
+- [在一个N*N的棋盘上，我们可以按以下规则移动棋子：1，起始点是(0,0);2,第一次移动总是到(1,0);3,最多移动N次，每次只能朝上下左右方向移动一个格子，4，不能移动到已经移动过的地方，5，不能移动到棋盘之外。问：对于N*N的棋盘，最多有几种不同的移动方式](https://leetcode-cn.com/problems/unique-paths/)
+```
+var uniquePaths = function (n) {
+  let sum = 0;
+  let pathArray = new Array(n).fill(0).map(()=>new Array(n).fill(0));
+  pathArray[0][0] = 1;
+  function checkPath(x, y, count) {
+    if (pathArray[x][y]==1) return;
+    if (count === 0) sum++;
+    else {
+      pathArray[x][y] = 1;
+      checkPath( x + 1, y, count - 1);
+      checkPath( x, y + 1, count - 1);
+      if (x !== 0) {
+        checkPath( x - 1, y, count - 1);
+      }
+      if (y !== 0) {
+        checkPath( x, y - 1, count - 1);
+      }
+      pathArray[x][y] = 0
+    }
+  }
+  checkPath( 0, 1, n - 1);
+  return sum;
+};
+```
+- 给定一个字符串，将其打印为三角形。 
+```
+var traverse = (str)=>{
+  let stack = [];
+  for(let i=0;str.length>0;i+=2){
+    stack.push(str.slice(0,i+1));
+    str = str.slice(i+1);
+    stack=stack.map((e,index)=>{
+      if(index !=stack.length-1){
+        return ' '+e+' ';
+      }else{
+        return e;
+      }
+    })
+  }
+  stack.forEach((e)=>{
+    console.log(e);
+  })
+  return stack;
+}
+const arr = new Array(60).fill(0).map((e,i)=>i).join('');
+```
+- 写出一个函数trans，将数字转换成汉语输出，输入为不超过1万亿的数字。比如123456转换成十二万三千四百五十六
+- [乱序区间合并,输入：`intervals = [[1,3],[2,6],[8,10],[15,18]]`,输出：`[[1,6],[8,10],[15,18]]`](https://leetcode-cn.com/problems/merge-intervals/)
+```
+var merge = (intervals)=>{
+  intervals.sort((a,b)=>a[0]-b[0]);
+  for(let i=0;i<intervals.length-1;i++){
+    let start = intervals[i][1];
+    let end = intervals[i+1][0];
+    if(start>=end){
+      const data = [...intervals[i],...intervals[i+1]];
+      const item = [Math.min(...data),Math.max(...data)];
+      intervals.splice(i,2,item);
+      i--;
+    }
+  }
+  return intervals;
+}
+```
+- 将一个链表逆序排列
+```
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+var reverseList = function(head) {
+    let pre = null;
+    let cur = head;
+    while(cur){
+        const next=cur.next;
+        cur.next = pre
+        pre=cur;
+        cur=next;
+    }
+    return pre
+};
+```
+- 输入一个正整数数组，如果这个数组可以通过以下两种操作中的一种，使整个数组变成单调递增或递减，则返回最终的单调序列，否则返回-1.这两种操作分别是：1，交换数组中某两个元素的值，2，指定数组中的某个严格子区间，将该区间进行递增或递减排序
+```
+function testArr(arr,start=0,end=arr.length-1){
+  let ascCount = 0;
+  let descCount = 0;
+  let tempArr=arr.slice(start,end+1);
+  let ascResult = Array.from(tempArr).sort((a,b)=>a-b);
+  let descResult = Array.from(tempArr).sort((a,b)=>b-a);
+  for(let i=0;i<tempArr.length;i++){
+    if(ascResult[i]!==tempArr[i]){
+      ascCount++;
+    }
+    if(ascCount>2){
+      break;
+    }
+  }
+  if(ascCount<3){
+    return ascResult;
+  }
+  for(let i=0;i<tempArr.length;i++){
+    if(descResult[i]!==tempArr[i]){
+      descCount++;
+    }
+    if(descCount>2){
+      break;
+    }
+  }
+  if(descCount<3){
+    return descResult;
+  }
+  return -1;
+}
+console.log(testArr([6,7,2,1,0]));
+console.log(testArr([6,1,2,3,0]));
+console.log(testArr([6,1,3,2,0]));
+console.log(testArr([6,0,3,2,0],1,4));
+```
+- 实现sum函数，使得sum(1,2,3).sumOf()//6;sum(2,3)(2).sumOf()//7;sum(1)(2)(3)(4).sumOf()//10;
+```
+function sum(...val){
+  const num = val.reduce((p,c)=>p+c,0);
+  const fn=(...val)=>{
+    return sum(num,...val);
+  }
+  fn.sumOf=()=>num;
+  return fn;
+}
+```
+- [二叉树所有根到叶子路径组成到数字之和。](https://leetcode-cn.com/problems/binary-tree-paths/)
+```
+var binaryTreePaths = function(root) {
+  const paths=[];
+  const DFS=(root,path)=>{
+    if(root){
+      path+=root.val;
+      if(root.left == null&&root.right==null){
+        paths.push(path);
+      }else{
+        DFS(root.left,path);
+        DFS(root.right,path);
+      }
+    }
+  }
+  DFS(root,0)
+  return paths;
+};
+```
+[`给定一个数组，最终返回一个二维数组，每个小数组由3个和为0的元素组成。全罗列，例如:[1,0,-1,1,2,-1,-4]输出[[-1,0,1],[-1,-1,2]];`](https://leetcode-cn.com/problems/3sum/)
+```
+var threeSum = function(nums) {
+    if(nums==null||nums.length<3) return [];
+    nums.sort((a,b)=>a-b)
+    let len = nums.length;
+    let res = [];
+    for(let i=0;i<len;i++){
+        if(nums[i]>0)  break;
+        if(i>0&&nums[i]==nums[i-1]) continue;
+        let l = i+1;
+        let r=len-1;
+        while(l<r){
+            const sum = nums[l]+nums[i]+nums[r]
+            if(sum==0){
+                res.push([nums[l],nums[i],nums[r]]);
+                while(l<r&&nums[l]==nums[l+1]){
+                    l+=1;
+                }
+                while(l<r&&nums[r]==nums[r-1]){
+                    r-=1;
+                }
+                l+=1;
+                r-=1;
+            }else if(sum>0){
+                r-=1;
+            }else{
+                l+=1;
+            }
+        } 
+    }
+    return res
+
+};
+
+```
+- [求一个数平方根，保留三位小数。](https://leetcode-cn.com/problems/sqrtx/);
+```
+const sqrt=(num)=>{
+  if(num<0) throw Error('输入数值必须是个正数');
+  let temp = 0;
+  //处理输入值小于1的情况
+  if(num<1) {
+    while(num<1){
+      temp+=2;
+      num*=100;
+    }
+  }
+  temp=Math.pow(10,temp/2);
+  let low = 0;
+  let high = num;
+  let mid = low+(high-low)/2;
+  while(high-low>0.0000001){
+     if(Math.abs(mid*mid-num)<0.0000001){
+      return (mid/temp).toFixed(3);
+    }else if(mid*mid>num){
+      high=mid;
+    }else if(mid*mid<num){
+      low = mid;
+    }
+    mid=low+(high-low)/2; 
+  }
+  return (mid/temp).toFixed(3)
+}
+console.log(sqrt(0.04))
+```
+- 斐波那契数列大数相加
+
+- 某前端团队的技术分享两周一次，一次两人，为了确定下一次是谁来分享，团队中引入分享积分制，具体规则为：
+    - 每个人都有一个积分，初始值为0
+    - 每一次分享后所有人要一轮骰子，点数做为积分累加到格子积分中，骰子点数为1-12
+    - 积分最高的两个人作为下一次的分享人
+    - 为了避免连续分享，某个人分享后它的积分会被清零，并且跳过本次的摇骰子环节，
+    - 如果积分最高的人数超过两个人，则相同分数的人继续摇骰子，直至决出2个积分最高的人，此时的积分继续累计
+  请编写代码模拟这个过程。
+  ```
+  class share {
+  constructor(data){
+    this.personList=data;
+  }
+  getHiger(end){
+    //如果参与摇骰子人数少于两人，直接退出
+    if(end<2)return;
+    //给每个人随机积分，从1到12;
+    for(let i=0;i<end;i++){
+      this.personList[i].value+=Math.ceil(Math.random()*12);
+    }
+    //按照积分进行排序，并且返回一个新的数组
+    let res = this.personList.splice(0,end).sort((a,b)=>b.value-a.value);
+    Array.prototype.unshift.apply(this.personList,res);
+    //不管几个人积分相等，实际上只需要判读第二个和第三个积分是否相等,都需要重新摇骰子。
+    if(this.personList[2].value==this.personList[1].value){
+      //查找积分相同的人的位置
+      let i =3;
+      while(1){
+        if(i==this.personList.length)break;
+        if(this.personList[i].value!==this.personList[i-1].value){
+          break;
+        }else{
+          i++;
+        }
+      }
+      //对于最高积分相同的人重复摇骰子的过程
+      return this.getHiger(i);
+    }else{
+      //将第一个和第二个人的积分置空
+      this.personList[0].value=0;
+      this.personList[1].value=0;
+      return;
+    }
+  }
+  wholsNext(){
+    this.getHiger(this.personList.length);
+    return [this.personList[0].name,this.personList[1].name];
+  }
+}
+
+let b=[
+  {name:"a",value:0},
+  {name:"b",value:0},
+  {name:"c",value:0},
+  {name:"d",value:0},
+  {name:"e",value:0},
+  {name:"f",value:0},
+  {name:"g",value:0},
+  {name:"h",value:0},
+  {name:"i",value:0},
+  {name:"j",value:0},
+]
+let a = new share(b);
+console.log(a.wholsNext());
+console.log(a.wholsNext());
+console.log(a.wholsNext());
+console.log(a.wholsNext());
+console.log(a.wholsNext());
+console.log(a.wholsNext());
+  ```
+- 任意两个给定区间，写一个函数isOverlapped，判断这两个区间是否有重叠，(不存在非法数据，区间都是闭区间)
+```
+  function isOverlapped(first,second){
+    if(first.end<second.start||first.start>secode.end){
+      return false
+    }else{return true};
+  }
+```
+- 手写代码实现一个react-hook，reactSafeState，用于组件卸载后异步请求返回数据设置state报错的解决。
+```
+import {useState,useRef,useEffect}from 'react';
+function useSafeState(initialState){
+    const [state,setState] = useState(initialState);
+    //使用ref存放一个变量
+    const unmountedRef = useRef(false);
+    useEffect(()=>{
+        return ()=>{
+            //useEffect 中return的函数表示componentWillUnmounted周期
+            unmountedRef.current = true;
+        }
+    },[])
+    const setCurrentState = (currentState)=>{
+        // 当变量变为true的时候直接return
+        if(unmountedRef.current) return;
+        setState(currentState)
+    }
+    return [state,setCurrentState];
+}
+export default useSafeState;
+```
+- 实现一个LazyMan,可以按照以下方式调用：
+  输入：LazyMan('Hank')
+  输出：Hi!This is Hanl!
+  输入：LazyMan('Hank).sleep(10).eat('dinner')
+  输出：Hi!This is Hanl!(等待10s)wake up after 10；Eat dinner~
+  输入：LazyMan('Hank).sleep(10).eat('dinner').eat('supper')
+  输出：Hi!This is Hanl!(等待10s)wake up after 10；Eat dinner~;Eat supper~
+  输入：LazyMan('Hank).sleepFirst(5).eat('supper')
+  输出：(等待5s)wake up after 5；Hi!This is Hanl!Eat supper~
+```
+
+class LazyMan{
+  constructor(name){
+    this.queue = [];
+    this.name = name;
+    this.sayName()
+    Promise.resolve().then(()=>{
+      let sequence = Promise.resolve();
+      this.queue.forEach(item => {
+          sequence = sequence.then(item);
+      });
+    })
+  }
+  sayName(){
+    this.queue.push(()=>{
+      console.log(`Hi!this is ${this.name}`)
+    })
+    return this;
+  }
+  eat(str){
+    this.queue.push(()=>{
+      console.log(`Eat ${str}`);
+    })
+    return this;
+  }
+  sleepFirst(time){
+    this.queue.unshift(this._holdOn(time))
+    return this;
+  }
+  sleep(time){
+    this.queue.push(this._holdOn(time))
+    return this;
+  }
+  _holdOn(time){
+    return ()=>new Promise((resolve)=>{
+      setTimeout(()=>{
+        console.log(`wake up after ${time}`);
+        resolve()
+      },time*1000);
+    })
+  }
+}
+const newLazyMan = (name)=>new LazyMan(name);
+newLazyMan('Hank').sleepFirst(10).eat('dinner').eat('supper')
+```
+- 任意两个日期，填满中间日期，如[2020-04-01,2020-04-05]=>2020-04-01,2020-04-02,2020-04-03,2020-04-04,2020-04-05
+```
+const format=(stamp)=>{
+  let date = new Date(stamp);
+  let month = date.getMonth()+1;
+  let day = date.getDate();
+  return date.getFullYear()+'-'+(month>=10?month:'0'+month)+'-'+(day>=10?day:'0'+day);
+}
+const fillDates=(a,b)=>{
+  const result = []
+  let startStamp = new Date(a).getTime();
+  let endStamp = new Date(b).getTime();
+  while(startStamp<=endStamp){
+    result.push(format(startStamp));
+    startStamp+=24*3600*1000;
+  }
+  return result;
+}
+```

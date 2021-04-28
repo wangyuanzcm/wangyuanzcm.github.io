@@ -1,3 +1,3 @@
-export { default as Exercise } from './exercise';
-export { default as Coding } from './coding';
-export { default as Algorithm } from './algorithm';
+export { default as Exercise } from './Exercise';
+export { default as Coding } from './Coding';
+export { default as Algorithm } from './Algorithm';

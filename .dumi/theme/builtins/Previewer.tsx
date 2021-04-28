@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import Tabs, { TabPane } from 'rc-tabs';
 // @ts-ignore
 import { history } from 'dumi';
-import type { IPreviewerComponentProps} from 'dumi/theme';
+import type { IPreviewerComponentProps } from 'dumi/theme';
 import {
   context,
   useCodeSandbox,
@@ -17,7 +17,7 @@ import {
   usePrefersColor
 } from 'dumi/theme';
 import type { ICodeBlockProps } from './SourceCode';
-import SourceCode from './SourceCode';
+import SourceCode,{SourceEditor} from './SourceCode';
 import './Previewer.less';
 
 export interface IPreviewerProps extends IPreviewerComponentProps {
@@ -59,7 +59,6 @@ export interface IPreviewerProps extends IPreviewerComponentProps {
 function getSourceType(file: string, source: IPreviewerComponentProps['sources']['_']) {
   // use file extension as source type first
   let type = file.match(/\.(\w+)$/)?.[1];
-  console.log(file,'file')
   if (!type) {
     type = source.tsx ? 'tsx' : 'jsx';
   }
@@ -83,6 +82,8 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
   const [sourceType, setSourceType] = useState(
     getSourceType(currentFile, props.sources[currentFile]),
   );
+  const [debugMode, setDebugMode] = useState(false);
+
   const [showSource, setShowSource] = useState(Boolean(props.defaultShowCode));
   const [iframeKey, setIframeKey] = useState(Math.random());
   const currentFileCode =
@@ -115,8 +116,9 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
       data-debug={props.debug || undefined}
       data-iframe={props.iframe || undefined}
     >
+
       {props.iframe && <div className="__dumi-default-previewer-browser-nav" />}
-      <div
+      {sourceType === 'tsx' && <div
         ref={demoRef}
         className="__dumi-default-previewer-demo"
         style={{
@@ -139,8 +141,9 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
         ) : (
           props.children
         )}
-      </div>
-      <div className="__dumi-default-previewer-desc" data-title={props.title}>
+      </div>}
+
+      {sourceType === 'tsx' && <div className="__dumi-default-previewer-desc" data-title={props.title}>
         {props.title && <AnchorLink to={`#${props.identifier}`}>{props.title}</AnchorLink>}
         {props.description && (
           <div
@@ -148,9 +151,17 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
             dangerouslySetInnerHTML={{ __html: props.description }}
           />
         )}
-      </div>
+      </div>}
       <div className="__dumi-default-previewer-actions">
-        {openCSB && (
+        {sourceType === 'jsx' && <div
+          title="打开调试开关"
+          className={`__dumi-default-switch${debugMode ? " __dumi-default-switch-active" : ""}`}
+          role="调试模式"
+          onClick={() => {
+            setDebugMode(!debugMode)
+            setShowSource(true)
+          }}></div>}
+        {(openCSB && sourceType === 'tsx') && (
           <button
             title="Open demo on CodeSandbox.io"
             className="__dumi-default-icon"
@@ -158,7 +169,7 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
             onClick={openCSB}
           />
         )}
-        {openRiddle && (
+        {(openRiddle && sourceType === 'tsx') && (
           <button
             title="Open demo on Riddle"
             className="__dumi-default-icon"
@@ -183,7 +194,7 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
             onClick={() => setIframeKey(Math.random())}
           />
         )}
-        {!props.hideActions?.includes('EXTERNAL') && (
+        {(!props.hideActions?.includes('EXTERNAL') && sourceType === 'tsx') && (
           <Link target="_blank" to={demoUrl}>
             <button
               title="Open demo in new tab"
@@ -242,11 +253,12 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
             </Tabs>
           )}
           <div className="__dumi-default-previewer-source">
-            <SourceCode code={currentFileCode} lang={sourceType} showCopy={false} />
+            {!debugMode ? <SourceCode code={currentFileCode} lang={sourceType} showCopy={false} /> : <SourceEditor code={currentFileCode} lang={sourceType} showCopy={false}/>}
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

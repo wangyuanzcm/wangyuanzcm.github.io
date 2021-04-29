@@ -1030,8 +1030,8 @@ console.log(sqrt(0.04))
     - 为了避免连续分享，某个人分享后它的积分会被清零，并且跳过本次的摇骰子环节，
     - 如果积分最高的人数超过两个人，则相同分数的人继续摇骰子，直至决出2个积分最高的人，此时的积分继续累计
   请编写代码模拟这个过程。
-  ```
-  class share {
+```
+class share {
   constructor(data){
     this.personList=data;
   }
@@ -1091,7 +1091,7 @@ console.log(a.wholsNext());
 console.log(a.wholsNext());
 console.log(a.wholsNext());
 console.log(a.wholsNext());
-  ```
+```
 - 任意两个给定区间，写一个函数isOverlapped，判断这两个区间是否有重叠，(不存在非法数据，区间都是闭区间)
 ```
   function isOverlapped(first,second){
@@ -1100,7 +1100,9 @@ console.log(a.wholsNext());
     }else{return true};
   }
 ```
+
 - 手写代码实现一个react-hook，reactSafeState，用于组件卸载后异步请求返回数据设置state报错的解决。
+
 ```
 import {useState,useRef,useEffect}from 'react';
 function useSafeState(initialState){
@@ -1122,17 +1124,18 @@ function useSafeState(initialState){
 }
 export default useSafeState;
 ```
-- 实现一个LazyMan,可以按照以下方式调用：
-  输入：LazyMan('Hank')
-  输出：Hi!This is Hanl!
-  输入：LazyMan('Hank).sleep(10).eat('dinner')
-  输出：Hi!This is Hanl!(等待10s)wake up after 10；Eat dinner~
-  输入：LazyMan('Hank).sleep(10).eat('dinner').eat('supper')
-  输出：Hi!This is Hanl!(等待10s)wake up after 10；Eat dinner~;Eat supper~
-  输入：LazyMan('Hank).sleepFirst(5).eat('supper')
-  输出：(等待5s)wake up after 5；Hi!This is Hanl!Eat supper~
-```
 
+- 实现一个LazyMan,可以按照以下方式调用：
+>  输入：`LazyMan('Hank')`  
+>  输出：`Hi!This is Hanl!`  
+>  输入：`LazyMan('Hank).sleep(10).eat('dinner')`  
+>  输出：`Hi!This is Hanl!(等待10s)wake up after 10；Eat dinner~`  
+>  输入：`LazyMan('Hank).sleep(10).eat('dinner').eat('supper')`  
+>  输出：`Hi!This is Hanl!(等待10s)wake up after 10；Eat dinner~;Eat supper~`  
+>  输入：`LazyMan('Hank).sleepFirst(5).eat('supper')`  
+>  输出：`(等待5s)wake up after 5；Hi!This is Hanl!Eat supper~`   
+
+```
 class LazyMan{
   constructor(name){
     this.queue = [];
@@ -1176,8 +1179,11 @@ class LazyMan{
 }
 const newLazyMan = (name)=>new LazyMan(name);
 newLazyMan('Hank').sleepFirst(10).eat('dinner').eat('supper')
+
 ```
+
 - 任意两个日期，填满中间日期，如[2020-04-01,2020-04-05]=>2020-04-01,2020-04-02,2020-04-03,2020-04-04,2020-04-05
+
 ```
 const format=(stamp)=>{
   let date = new Date(stamp);
@@ -1215,6 +1221,7 @@ console.log(padEnd(str,6,'_-'))
 console.log(padEnd(str,6,'0'))
 console.log(padEnd('abcd',3))
 ```
+
 - 说一下下面代码输出的什么？
 ```
 var length = 10;

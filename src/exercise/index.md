@@ -13,9 +13,10 @@ group:
 
 ## 每日一练
 
+
 ### 2020-01-06 [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
   - （扩展同理可解合并两个有序链表）
-```jsx
+```tsx
   function merge(nums1,m,nums2,n){
       let index1 =m-1;
       let index2 = n-1;
@@ -1194,4 +1195,40 @@ const fillDates=(a,b)=>{
   }
   return result;
 }
+```
+
+- 如果string字符串长度小于length，则在右侧填充字符，如果超出length长度则截断超出部分，如：padEnd('abc',6,'_-')=>'abc_-_'
+
+```
+function padEnd(string,length,char=''){
+  length=length>>0;
+  char = String(char);
+  if(string.length>length){
+    return string.slice(0,length);
+  }else{
+    padLength = Math.ceil((length-string.length)/char.length);
+    return (string+char.repeat(padLength)).substring(0,length)
+  }
+}
+const str = 'abc'
+console.log(padEnd(str,6,'_-'))
+console.log(padEnd(str,6,'0'))
+console.log(padEnd('abcd',3))
+```
+- 说一下下面代码输出的什么？
+```
+var length = 10;
+function fn(){
+  return this.length+1;
+}
+var obj={
+  length:5,
+  test1:function(){
+    return fn();
+  }
+}
+obj.test2 = fn;
+下面代码输出是什么：(注意是在浏览器里面)
+console.log(obj.test1());
+console.log(fn()===obj.test2())
 ```

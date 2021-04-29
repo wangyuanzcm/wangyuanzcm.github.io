@@ -1,13 +1,16 @@
 ---
 title: 每日一练
+order: 2
 nav:
   title: 手写代码
   path: /components
 group:
   title: 手写代码
   path: /手写代码
-  order: 2
+  order: 1000
 ---
+
+
 ## 每日一练
 
 ### 2020-01-06 [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)

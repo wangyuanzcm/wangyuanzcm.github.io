@@ -1,0 +1,116 @@
+javascript
+    原型链
+    继承
+    作用域
+    闭包
+    变量提升
+    this的指向
+    立即执行函数
+    instanceof原理
+    bind的实现
+    apply和call
+    柯里化
+    v8垃圾回收机制（这里一般只有三个问题）
+    浮点数精度
+    new操作符
+    事件循环机制
+    promise原理
+    generator原理
+
+css
+    盒子模型
+    CSS选择器
+    BFC
+    position
+    flex布局
+    css优先级
+    双飞冀/圣杯布局
+    CSS3新特性
+    CSS样式隔离
+    CSS性能优化
+    层叠上下文
+    div居中
+    浮动
+html&浏览器
+    行内元素、块级元素
+    跨标签页通信
+    history和hash两种路由
+    DOM树
+    事件模型
+    缓存策略
+    浏览器架构
+    浏览器工作原理
+    内存泄露
+性能
+    前端性能优化指标RAIL
+    前端性能优化手段
+    重排和重绘
+    白屏
+    大量图片加载优化
+    描述下浏览器从输入网址到页面展现的整个过程
+    动画性能
+    渲染合成层
+
+工程化
+    模块化机制
+    tree shaking
+    uglify原理
+    babel原理
+    webpack工作流程
+    webpack插件机制
+    webpack loader机制
+    前端微服务
+框架：
+    - react
+        合成事件
+        virtual dom
+        setState过程
+        fiber
+        高阶组件
+        错误处理
+        性能优化
+    - redux
+        redux核心原则
+        redux核心逻辑
+    - vue
+        数据绑定原理
+        computed和watch
+        slot
+        next tick原理
+        keep alive
+基础
+    操作系统
+        进程和线程
+        进程通信
+        进程调度策略
+        死锁
+        IO多路复用
+    网络
+        七层网络模型
+        http
+        https
+        http2.0
+        http3.0
+        websocket
+        tcp
+        udp
+Nodejs
+    模块机制
+    require原理
+    事件循环
+    cluster原理
+    流机制
+    pipe原理
+    守护进程
+    进程通信
+    异常处理
+设计模式：
+    常用设计模式
+    重构
+    MVVM
+    MVC
+    MVP
+开放题
+    最近看的书
+    平常的学习途径
+    你比较擅长哪一块，不足的地方在哪里

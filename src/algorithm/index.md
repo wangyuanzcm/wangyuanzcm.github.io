@@ -1,12 +1,13 @@
 ---
 title: 手写算法
+order: 3
 nav:
   title: 手写代码
   path: /components
 group:
-  title: 手写算法
-  path: /手写算法
-  order: 2
+  title: 手写代码
+  path: /手写代码
+  order: 1000
 ---
 
 手写算法:

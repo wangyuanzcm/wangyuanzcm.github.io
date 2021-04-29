@@ -194,7 +194,7 @@ const Previewer: React.FC<IPreviewerProps> = oProps => {
             onClick={() => setIframeKey(Math.random())}
           />
         )}
-        {(!props.hideActions?.includes('EXTERNAL') && sourceType === 'tsx') && (
+        {(!props.hideActions?.includes('EXTERNAL') ) && (
           <Link target="_blank" to={demoUrl}>
             <button
               title="Open demo in new tab"

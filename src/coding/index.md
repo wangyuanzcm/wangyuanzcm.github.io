@@ -13,7 +13,7 @@ group:
 
 - ES6的polyfill实现
   - 手写promise，promise.all,promise.race,promise.finally
-  - 手写数组方法的实现，比如reduce，flat，unique(复杂数组的去重)，map,isArray
+  - 手写数组方法的实现，比如reduce，flat，unique(复杂数组的去重)，map,isArray，sort
   - 手写字符串方法的实现，比如repeat，padEnd
   - 手写使用setTimeOut实现setInterval
   - 使用generator模拟async，await的实现
@@ -39,6 +39,8 @@ group:
   - 手写一个require
   - 手写一个webpack的plugin
   - 实现一个模版引擎
+  - 手写实现react-router
+  - 手写实现一个编译器：[the-super-tiny-compiler](https://github.com/jamiebuilds/the-super-tiny-compiler)
 - 手写业务代码
   - 手写一个双向数据绑定
   - 手写一个拖拽
@@ -46,7 +48,18 @@ group:
 
 - - 实现一个repeat方法，比如：
 ```
-function repeat(func,times,wait){}
+function repeat(fn, times, wait) {
+  return async (...args) => {
+      for(let i=0;i<times;i++){
+        await new Promise(resolve=>{
+          setTimeout(()=>{
+            fn.apply(this,args);
+            resolve()
+          },wait)
+        })
+      }
+  };
+}
 const repeatFunc = repeat(console.log,4,3000);
 repeatFunc("hello Horld");//输出四次hello word,每隔3秒
 ```
@@ -98,4 +111,4 @@ function random(n){
 - 红黄绿三色求，按组排序，输入:[2,0,2,1,1,0],输出：[1,2,0,0,2,2];要求原地调换，空间复杂度为O(1)、时间复杂度尽量最优
 - 单调栈，输入：n（楼数），下吗每一行包涵n个数字wi，代表每一栋的高度，输出一行，包涵空格分割的n个数字，分别代表在第i东楼的时候看待的楼的数量
 - 给出两个版本号，比较两个版本号的大小，(0.1<1.1.1<1.2<13.37>>)
-
+- 判断一个字符串是否是一个合法的html片段（标签闭合，且嵌套关系正确）

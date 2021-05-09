@@ -2,14 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import type { IApi, IRoute } from '@umijs/types';
 import { createDebug } from '@umijs/utils';
-import getTheme from '../../../theme/loader';
-import { getDemoRouteName } from '../../../theme/hooks/useDemoUrl';
+import getTheme from '@umijs/preset-dumi/lib/theme/loader';
+import { getDemoRouteName } from '@umijs/preset-dumi/lib/theme/hooks/useDemoUrl';
 import {
   decodeImportRequireWithAutoDynamic,
   isDynamicEnable,
   isHoistImport,
   decodeHoistImport,
-} from '../../../transformer/utils';
+} from '@umijs/preset-dumi/lib/transformer/utils';
 
 const debug = createDebug('dumi:demos');
 
@@ -40,7 +40,6 @@ export default (api: IApi) => {
         'demos_no_comp';
       const itemHoistImports: Record<string, number> = {};
       let demoComponent = demos[uuid].component;
-
       // replace to dynamic component for await import component
       demoComponent = decodeImportRequireWithAutoDynamic(demoComponent, chunkName);
 
@@ -63,7 +62,6 @@ export default (api: IApi) => {
         (str, [stmt, no]) => str.replace(new RegExp(`"${stmt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'g'), `rawCode${no}`),
         JSON.stringify(demos[uuid].previewerProps),
       );
-
       return {
         uuid,
         component: demoComponent,
@@ -188,14 +186,13 @@ export default (api: IApi) => {
 
         ${demoRenderBody}
         }`;
-
     prependRoutes[0].wrappers = [
       // builtin outer layout, for initialize context
-      api.utils.winPath(path.join(__dirname, '../../../theme/layout')),
+      // api.utils.winPath(path.join(__dirname, '/theme/layout')),
+      theme.layoutPaths._,
       theme.layoutPaths.demo,
     ].filter(Boolean);
     prependRoutes[0].component = `(props) => ${demoRouteComponent}`;
-
     routes.unshift(...prependRoutes);
 
     return routes;

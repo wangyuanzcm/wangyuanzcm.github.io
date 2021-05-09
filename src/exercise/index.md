@@ -12,6 +12,18 @@ group:
 
 
 ## 每日一练
+```jsx
+/**
+ * defaultShowCode: true
+ * title: 使用 axios
+ * hideActions: ["CSB"]
+ * desc: 通过设置 `requstMethod`, 可以使用自己的请求库。
+ */
+import React from 'react';
+import { Exercise } from 'hiker-blog';
+
+export default () => <Exercise title="First Demo" />;
+```
 
 ### [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
 >（扩展同理可解合并两个有序链表）

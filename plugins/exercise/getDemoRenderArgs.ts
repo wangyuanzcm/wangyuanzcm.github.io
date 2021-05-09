@@ -18,7 +18,6 @@ export default (
   const uuid = props.match.params.uuid;
   const inline = props.location.query.wrapper === undefined;
   const demo = demos[uuid];
-
   if (demo) {
     const previewerProps = {
       ...demo.previewerProps,

@@ -13,10 +13,14 @@ group:
 
 ## 每日一练
 
+### [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
+>（扩展同理可解合并两个有序链表）
+``` jsx
 
-### 2020-01-06 [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
-  - （扩展同理可解合并两个有序链表）
-```tsx
+/**
+ * title: "[合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)"
+ * desc: "（扩展同理可解合并两个有序链表）"
+ */
   function merge(nums1,m,nums2,n){
       let index1 =m-1;
       let index2 = n-1;
@@ -34,23 +38,27 @@ group:
       }
   }
 ```
-- [统计所有小于非负整数 n 的质数的数量](https://leetcode-cn.com/problems/count-primes/)
-  ```
-  var countPrimes = function(n) {
-  if(n<=2) return 0;
-      let filter = new Array(n).fill(1);
-      let res = 0;
-      for(let i=2;i<n;i++){
-          if(filter[i]){
-              res++;
-              for(let j=i*i;j<n;j+=i){
-                  filter[j]=0;
-              }
-          }
-      }
-      return res;
-  };
-  ```
+### [统计所有小于非负整数 n 的质数的数量](https://leetcode-cn.com/problems/count-primes/)
+```jsx
+/**
+ * title: [统计所有小于非负整数 n 的质数的数量](https://leetcode-cn.com/problems/count-primes/)
+ * desc:
+ */
+var countPrimes = function(n) {
+if(n<=2) return 0;
+    let filter = new Array(n).fill(1);
+    let res = 0;
+    for(let i=2;i<n;i++){
+        if(filter[i]){
+            res++;
+            for(let j=i*i;j<n;j+=i){
+                filter[j]=0;
+            }
+        }
+    }
+    return res;
+};
+```
 - [编写一个算法题来判断一个数 n 是不是快乐数](https://leetcode-cn.com/problems/happy-number/)
   ```
   const isHappy = (n) => {
@@ -1238,4 +1246,125 @@ obj.test2 = fn;
 下面代码输出是什么：(注意是在浏览器里面)
 console.log(obj.test1());
 console.log(fn()===obj.test2())
+```
+- 执行深比较来确定二者的值是否相等
+> var obj1 = {'a':1};
+> var obj2 = {'a':1};
+> isEqual(obj1,obj2);
+```
+const isObject = (obj) => {
+  return typeof obj === "object" && obj !== null;
+};
+const isEqual = (obj1, obj2) => {
+  if (!isObject(obj1) || !isObject(obj2)) return obj1 === obj2;
+  if (obj1 === obj2) return true;
+  let keys1 = Object.keys(obj1),
+    keys2 = Object.keys(obj2);
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+  for (let key in obj1) {
+    const res = isEqual(obj1[key], obj2[key]);
+    if (!res) {
+      return false;
+    }
+  }
+  return true;
+};
+var obj1 = { a: 1, b: ["ss", 0, true, { c: 1 }] };
+// var obj2 = obj1;
+var obj2 = { a: 1, b: ["ss", 0, true, { c: 1 }] };
+console.log(isEqual(obj1, obj2));
+
+```
+- 给一个字符串S，只能通过删除头字符插入到新字符串或删除尾字符插入到新字符串操作来构造一个新字符串T，保证T使得字符串到字典序最小(其实求的是一个字符串循环同构的最小表示)
+```
+function strSort(S){
+    if(!S.length) return S;
+    let T = "";
+    let i=0,j=S.length-1;
+    const isEqual=(l,r)=>{
+        let res = true;
+        while(l<r){
+            if(S[l]<S[r]){
+                break;
+            }else if(S[l]>S[r]){
+                res = false;
+                break;
+            }
+            l++;
+            r--;
+        }
+        return res;
+    }
+    while(i<=j){
+        if(S[i]>S[j]){
+            T+=S[j];
+            j--;
+        }else if (S[i]<S[j]){
+            T+=S[i];
+            i++
+        }else{
+            if(isEqual(i,j)){
+                T+=S[i];
+                i++;
+            }else{
+                T+=S[j];
+                j--
+            }
+        }
+    }
+    return T;
+}
+const S = "ASDFCBDBCA";
+console.log(strSort(S));//"AACBDBCFDS"
+// 6ACDBCB=>6ABCBCD
+// ASDFCBDBCA=>AACBDBCFDS
+```
+- 图片旋转动画手动实现
+```
+  .container{
+            width:200px;
+            height: 200px;
+            animation: circle 5s linear infinite;
+        }
+        @keyframes circle {
+            0%{
+                transform: rotate(0);
+            }
+            100%{
+                transform: rotate(360deg);
+            }
+        }
+        img{
+            width: 100%;
+        }
+```
+- [给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。](https://leetcode-cn.com/problems/permutations/)
+
+```
+
+var permute = function(nums) {
+    if(!nums.length) return [];
+    let len = nums.length;
+    let res = [];
+    let path=[];
+    let map = {};
+    const DFS=()=>{
+        if(len==path.length) {
+            res.push(path.slice());
+            return;    
+        }
+        for(let num of nums){
+            if(map[num]) continue;
+            path.push(num);
+            map[num] = true;
+            DFS();
+            path.pop();
+            map[num] = false;
+        }
+    }
+    DFS()
+    return res;
+};
 ```

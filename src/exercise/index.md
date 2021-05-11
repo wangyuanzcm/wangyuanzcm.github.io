@@ -416,6 +416,34 @@ const splitString = (str)=>{
 - 实现一个函数模拟除法，用括号把无限循环小数扩起来，例如1/3=0.33333，该函数需要返回`0.(3)`
 
 ```
+<!-- 该解法有误，需要修正 -->
+const divide = (num,divide)=>{
+  if(typeof num !== 'number'||typeof divide !== 'number'){
+    throw new TypeError('Invalid number');
+  }
+  const remain = [];
+  let cur = num;
+  let prefix = 0;
+  let trunc;
+  while(!remain.includes(trunc)){
+    if(cur>divide){
+      prefix = Math.trunc(cur/divide);
+      cur%=divide;
+      continue;
+    }
+    remain.push(trunc);
+    cur = cur*10;
+    trunc = Math.trunc(cur/divide);
+    cur%=divide;
+  }
+  remain.shift();
+  const startId = remain.indexOf(trunc);
+  return `${prefix}.${remain.slice(0,startId).join('')}(${remain.join('')})`
+
+}
+console.log(divide(1,4))
+console.log(divide(1,7))
+console.log(divide(10,3))
 ```
 - 输入一个int整型数组，数组中的一个或多个连续整数组成一个子数组。求所有子数组中和的最大值。输入的数组中保证至少有一个正数
     ```
@@ -1402,5 +1430,45 @@ const maxDeep = (arr) => {
 console.log(maxDeep([1, 2, 3, 4, 5]));
 console.log(maxDeep([1, [2, 3], 4, [5, 6], [7]]));
 console.log(maxDeep([1, [2, [3], 4], [5, 6], [7]]));
+
+```
+- `function add(a,b){return a+b};`
+`function curry(fn){}`
+`curry(add)(a)(b)=>3`;
+
+```
+function add(a,b){
+  return a+b
+};
+function curry(fn,args=[]){
+  let _this = this;
+  let len = fn.length;
+  return function(){
+    let _args = Array.prototype.slice.call(arguments);
+    Array.prototype.push.apply(args,_args)
+    if(args.length<len){
+      return curry.call(_this,fn,_args);
+    }
+    return fn.apply(this,args);
+  } 
+}
+console.log(curry(add)(1)(2))//3
+
+```
+```
+function add(a,b){
+  return a+b
+};
+function curry(fn,args=[]){
+  let len = fn.length;
+  return function cb(){
+    args.push(...arguments);
+    if(args.length<len){
+      return cb
+    }
+    return fn.apply(this,args);
+  } 
+}
+console.log(curry(add)(1)(2))//3
 
 ```

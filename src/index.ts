@@ -1,9 +1,9 @@
 import Exercise from './Exercise';
-import  Coding  from './Coding';
-import  Algorithm  from './Algorithm';
+import Coding from './Coding';
+import Algorithm from './Algorithm';
 
 export {
-     Exercise,
-     Coding,
-      Algorithm 
-    }
+  Exercise,
+  Coding,
+  Algorithm
+}

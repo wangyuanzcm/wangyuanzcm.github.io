@@ -1380,3 +1380,27 @@ var permute = function(nums) {
     return res;
 };
 ```
+- 实现maxDeep() 
+`maxDeep([1,2,3,4,5]) // 1` 
+`maxDeep([1,[2,3],4,[5,6],[7]]) // 2` 
+`maxDeep([1,[2,[3],4],[5,6],[7]]) // 3`
+
+```
+const maxDeep = (arr) => {
+  let deep = 0;
+  let flag = true;
+  while (flag) {
+    if (arr.length && arr.filter((item) => Array.isArray(item)).length) {
+      arr = arr.flat();
+    } else {
+      flag = false;
+    }
+    deep += 1;
+  }
+  return deep;
+};
+console.log(maxDeep([1, 2, 3, 4, 5]));
+console.log(maxDeep([1, [2, 3], 4, [5, 6], [7]]));
+console.log(maxDeep([1, [2, [3], 4], [5, 6], [7]]));
+
+```

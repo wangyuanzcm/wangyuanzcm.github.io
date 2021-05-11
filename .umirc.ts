@@ -24,6 +24,15 @@ export default {
     includes: ['docs', 'src'],
   },
   plugins: ['./plugins/exercise/index.ts'],
-
+  scripts: [
+    {
+      src: 'https://utteranc.es/client.js',
+      repo: "wangyuanzcm/wangyuanzcm.github.io",
+      "issue-term": "pathname",
+      theme: "github-light",
+      crossorigin: "anonymous",
+      async: true
+    },
+  ],
   // more config: https://d.umijs.org/config
 }

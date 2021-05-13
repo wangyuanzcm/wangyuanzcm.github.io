@@ -1472,3 +1472,5 @@ function curry(fn,args=[]){
 console.log(curry(add)(1)(2))//3
 
 ```
+- 手写Object.definePrototype和proxy代理对象的方法实现
+(其实就是实现vue的双向数据绑定方法，体现出对象数据变化就行)

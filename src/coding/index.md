@@ -17,7 +17,7 @@ group:
   - 手写字符串方法的实现，比如repeat，padEnd
   - 手写使用setTimeOut实现setInterval
   - 使用generator模拟async，await的实现
-- 手写工具函数
+- 手写工具函数(业务中常用)
   - 手写防抖(Debouncing)，节流(Throtting)
   - 手写深拷贝
   - 手写一个发红包代码
